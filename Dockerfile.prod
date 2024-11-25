@@ -1,0 +1,27 @@
+FROM python:3.12-slim
+
+ENV PYTHONUNBUFFERED True
+
+# set the working directory
+WORKDIR /usr/src/app
+
+# install dependencies
+COPY ./requirements.txt ./
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+# copy src code
+COPY ./src ./src
+
+EXPOSE 4001
+
+# start the server
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "4001", "--proxy-headers"]
+
+#gcloud artifacts repositories create repo-mlops9-2 --repository-format docker --project proj-mlops9-2 --location us-central1
+
+#gcloud builds submit --config=cloudbuild.yaml --project proj-mlops9-2
+
+#gcloud run services replace service.yaml --region us-east1 --project proj-mlops9-2
+
+#gcloud run services set-iam-policy servicio-api-mlops9-2 gcr-service-policy.yaml --region us-east1 --project proj-mlops9-2
